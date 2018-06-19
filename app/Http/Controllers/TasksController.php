@@ -11,15 +11,13 @@ use App\Task;
 
 class TasksController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         if(\Auth::check()){
-            $tasks = Task::all();
+//            $tasks = Task::all();
+            $user = \Auth::user();
+            $tasks = Task::where('user_id', $user->id)->get();
             return view('tasks.index', [
                 'tasks' => $tasks,
             ]);
@@ -58,6 +56,7 @@ class TasksController extends Controller
         $task = new Task;
         $task->status = $request->status;
         $task->content = $request->content;
+        $task->user_id = \Auth::user()->id;
         $task->save();
 
         return redirect('/');
@@ -71,6 +70,7 @@ class TasksController extends Controller
      */
     public function show($id)
     {
+        $user = \Auth::user();
         $task = Task::find($id);
 
         return view('tasks.show', [
@@ -85,8 +85,17 @@ class TasksController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
+    { 
+        if(false == \Auth::check ()){
+            return redirect('/');
+        }
+
+        $user = \Auth::user();    
         $task = Task::find($id);
+        
+        if($task == null || $task->user_id != $user->id) {
+            return redirect('/');
+        }
 
         return view('tasks.edit', [
             'task' => $task,
@@ -114,14 +123,18 @@ class TasksController extends Controller
         return redirect('/');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
+        if(false == \Auth::check ()){
+            return redirect('/');
+        }
+
+        $user = \Auth::user(); 
+        $task = Task::find($id);
+        
+        if($task == null || $task->user_id != $user->id) {
+            return redirect('/');
+        }
         $task = Task::find($id);
         $task->delete();
 
