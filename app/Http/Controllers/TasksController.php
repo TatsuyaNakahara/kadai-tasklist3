@@ -125,16 +125,7 @@ class TasksController extends Controller
 
     public function destroy($id)
     {
-        if(false == \Auth::check ()){
-            return redirect('/');
-        }
-
-        $user = \Auth::user(); 
-        $task = Task::find($id);
         
-        if($task == null || $task->user_id != $user->id) {
-            return redirect('/');
-        }
         $task = Task::find($id);
         $task->delete();
 
