@@ -14,6 +14,7 @@ class TasksController extends Controller
     
     public function index()
     {
+        /*
         if(\Auth::check()){
 //            $tasks = Task::all();
             $user = \Auth::user();
@@ -23,7 +24,7 @@ class TasksController extends Controller
             ]);
         } else {
             return view('welcome');
-        }
+        }*/
     }
 
 
