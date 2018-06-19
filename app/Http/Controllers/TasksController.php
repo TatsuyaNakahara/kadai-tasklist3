@@ -16,11 +16,11 @@ class TasksController extends Controller
     {
         
         if(\Auth::check()){
-/*            $user = \Auth::user();
+            $user = \Auth::user();
             $tasks = Task::where('user_id', $user->id)->get();
             return view('tasks.index', [
                 'tasks' => $tasks,
-            ]);*/
+            ]);
         } else {
             return view('welcome');
         }
